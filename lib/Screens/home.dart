@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:karibu_visitor/Auth/login.dart';
+import 'package:karibu_visitor/services/utils/navigation.dart';
 //import 'package:karibu_visitor/widgets/Card.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -39,7 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
                 icon: const Icon(Icons.admin_panel_settings),
                 tooltip: "Admin",
-                onPressed: () {}),
+                onPressed: () {
+                  UserNavigation.push(context, destination: const Login());
+                }),
           ]),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
