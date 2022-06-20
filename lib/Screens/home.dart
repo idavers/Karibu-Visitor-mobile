@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
+                onTap: () {},
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -73,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               GestureDetector(
+                onTap: () {},
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
