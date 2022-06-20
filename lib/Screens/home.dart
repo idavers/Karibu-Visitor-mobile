@@ -20,6 +20,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final Color clockin = const Color.fromARGB(255, 5, 236, 13);
+  final Color clockout = Colors.blue;
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -42,9 +44,60 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          children: const <Widget>[],
-          // This trailing comma makes auto-formatting nicer for build methods.
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const Color.fromARGB(0, 0, 255, 0), width: 2.0),
+                    color: clockin,
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromARGB(0, 251, 255, 0),
+                        blurRadius: 4,
+                        spreadRadius: 2,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  margin: const EdgeInsets.all(8.0),
+                  height: 200,
+                  width: 200,
+                  //color: const Color.fromARGB(0, 255, 0, 0),
+                  child: const Text('Clock in'),
+                ),
+              ),
+              GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const Color.fromARGB(0, 0, 255, 0), width: 2.0),
+                    color: const Color.fromARGB(130, 9, 43, 236),
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromARGB(26, 87, 25, 202),
+                        blurRadius: 4,
+                        spreadRadius: 2,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  margin: const EdgeInsets.all(8.0),
+                  height: 200,
+                  width: 200,
+                  //color: const Color.fromARGB(0, 255, 0, 0),
+                  child: const Text('Clock out'),
+                ),
+              ),
+            ],
+            // This trailing comma makes auto-formatting nicer for build methods.
+          ),
         ),
       ),
     );
