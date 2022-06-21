@@ -49,10 +49,13 @@ class _EmployeeState extends State<Employee> {
                           child: Material(
                             child: Center(
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     "Enter New Employee Details",
-                                    style: GoogleFonts.montserrat(fontSize: 14),
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -209,6 +212,11 @@ class _EmployeeState extends State<Employee> {
                             ),
                           ),
                         ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ElevatedButton(
+                            onPressed: () {}, child: const Text('Add Employee'))
                       ],
                     ));
                   },
