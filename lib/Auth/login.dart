@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:karibu_visitor/Screens/addUser.dart';
+import 'package:karibu_visitor/services/utils/navigation.dart';
 
 class Login extends StatefulWidget {
   static const String path = "lib/Auth/login.dart";
@@ -147,7 +149,9 @@ class _LoginState extends State<Login> {
                         fontWeight: FontWeight.w700,
                         fontSize: 18),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    UserNavigation.push(context, destination: const Employee());
+                  },
                 ),
               )),
           const SizedBox(
