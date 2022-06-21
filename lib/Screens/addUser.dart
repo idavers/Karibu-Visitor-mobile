@@ -1,6 +1,10 @@
 // ignore: file_names
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:async';
+import 'package:http/http.dart' as http;
 
 class Employee extends StatefulWidget {
   const Employee({Key? key}) : super(key: key);
@@ -16,6 +20,8 @@ class _EmployeeState extends State<Employee> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
   final TextEditingController _email = TextEditingController();
+
+  final Uri url = Uri.parse('http://67.205.140.117/api/users');
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +40,12 @@ class _EmployeeState extends State<Employee> {
               onPressed: () {
                 showModalBottomSheet<void>(
                   context: context,
-                  // shape: ,
+                  isDismissible: true,
+                  //isScrollControlled: true,
+                  enableDrag: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(45.0),
+                  ),
                   builder: (BuildContext context) {
                     return SafeArea(
                         //height: 200,
@@ -215,8 +226,15 @@ class _EmployeeState extends State<Employee> {
                         const SizedBox(
                           height: 20,
                         ),
-                        ElevatedButton(
-                            onPressed: () {}, child: const Text('Add Employee'))
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    sendData();
+                                  },
+                                  child: const Text('Add Employee')),
+                            ]),
                       ],
                     ));
                   },
@@ -236,6 +254,21 @@ class _EmployeeState extends State<Employee> {
               color: Colors.white,
             ),
           ]),
+    );
+  }
+
+  Future<http.Response> sendData() {
+    return http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'name': _firstName.text,
+        'email': _email.text,
+        'password': _password.text,
+        'password_confirmation': _confirmPassword.text
+      }),
     );
   }
 }
