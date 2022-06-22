@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:karibu_visitor/modals/EmployeeData.dart';
 import 'package:karibu_visitor/Screens/metrics/metrics.dart';
+import 'package:karibu_visitor/modals/users.dart';
 
 class Employee extends StatefulWidget {
   const Employee({Key? key}) : super(key: key);
@@ -16,7 +17,8 @@ class Employee extends StatefulWidget {
 }
 
 class _EmployeeState extends State<Employee> with TickerProviderStateMixin {
-  List<Map<String, dynamic>> _previews = [];
+  final List<Map<String, dynamic>> _previews = [];
+  late Future<List<Users>> futureUsers;
   final Color color = const Color.fromARGB(0, 0, 0, 255);
   final TextEditingController _firstName = TextEditingController();
   final TextEditingController _lastName = TextEditingController();
@@ -25,6 +27,12 @@ class _EmployeeState extends State<Employee> with TickerProviderStateMixin {
   final TextEditingController _email = TextEditingController();
 
   final Uri url = Uri.parse('http://67.205.140.117/api/users');
+
+  @override
+  void initState() {
+    super.initState();
+    futureUsers = fetchUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,21 +272,41 @@ class _EmployeeState extends State<Employee> with TickerProviderStateMixin {
                   color: Colors.white,
                 ),
                 Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      ListTile(
-                        leading: Icon(Icons.person),
-                        title: Text('Name'),
-                        subtitle: Text.rich(TextSpan(children: [
-                          TextSpan(text: "Clock in"),
-                          WidgetSpan(
-                            child: Icon(Icons.online_prediction),
-                          )
-                        ])),
-                      )
-                    ],
-                  ),
+                  child: FutureBuilder<List<Users>>(
+                      future: futureUsers,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          // ignore: avoid_print
+                          print(snapshot);
+                          List<Users>? data = snapshot.data;
+                          return ListView.builder(
+                            itemCount: data!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                title: Text(data[index].name),
+                                subtitle:
+                                    Text('Signed at:${data[index].clockin}'),
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
+                        return const CircularProgressIndicator();
+                      }),
+
+                  // // child: Column(
+                  //   mainAxisSize: MainAxisSize.min,
+                  //   children: const [
+                  //     ListTile(
+                  //       leading: Icon(Icons.person, color: Colors.green),
+                  //       title: Text('Name'),
+                  //       subtitle: Text.rich(TextSpan(children: [
+                  //         TextSpan(text: "09:00 am"),
+                  //       ])),
+                  //     )
+                  //   //],
+                  // ),
                 )
               ]),
         ]));
@@ -297,5 +325,18 @@ class _EmployeeState extends State<Employee> with TickerProviderStateMixin {
         'password_confirmation': _confirmPassword.text
       }),
     );
+  }
+
+  Future<List<Users>> fetchUsers() async {
+    final response = await http
+        .get(Uri.parse('https://ellipsisattendance.herokuapp.com/user_logs'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((data) => Users.fromJson(data)).toList();
+      //return Users.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load users');
+    }
   }
 }
