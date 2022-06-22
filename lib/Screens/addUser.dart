@@ -268,13 +268,10 @@ class _EmployeeState extends State<Employee> with TickerProviderStateMixin {
                     mainAxisSize: MainAxisSize.min,
                     children: const [
                       ListTile(
-                        leading: Icon(Icons.person),
+                        leading: Icon(Icons.person, color: Colors.green),
                         title: Text('Name'),
                         subtitle: Text.rich(TextSpan(children: [
-                          TextSpan(text: "Clock in"),
-                          WidgetSpan(
-                            child: Icon(Icons.online_prediction),
-                          )
+                          TextSpan(text: "09:00 am"),
                         ])),
                       )
                     ],
